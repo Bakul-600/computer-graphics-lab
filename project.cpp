@@ -1,7 +1,10 @@
+#define GL_SILENCE_DEPRECATION
+
 #include <OpenGL/gl.h>
 #include <GLUT/glut.h>
 #include <math.h>
 #include <iostream>
+
 using namespace std;
 
 int signalState = 0;
@@ -27,7 +30,7 @@ int hDirection = 0;
 
 void playHorn()
 {
-    system("afplay ./horn.wav &");
+    system("afplay \"horn.mp3\" &");
 }
 
 void keyboard(unsigned char key, int x, int y)
@@ -298,6 +301,10 @@ void quad(int x1, int y1, int x2, int y2, int y3)
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT);
+
+    // Reset model-view transformation every frame
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 
     // road
     glColor3f(0.15, 0.15, 0.15);
@@ -753,14 +760,28 @@ void update(int value)
     glutTimerFunc(16, update, 0);
 }
 
+// void init(void)
+// {
+//     glClearColor(0.70, 1, 0.70, 0);
+//     // glClearColor(1,1,1,1);
+//     glMatrixMode(GL_PROJECTION);
+//     glLoadIdentity();
+//     // glOrtho (-100,100.0,-100.0,100,-1.0,1.0);
+//     glOrtho(-100, 100.0, -100.0, 70, -1.0, 1.0);
+// }
+
 void init(void)
 {
-    glClearColor(0.70, 1, 0.70, 0);
-    // glClearColor(1,1,1,1);
+    glClearColor(0.70, 1.0, 0.70, 0.0);
+
+    // Set projection
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    // glOrtho (-100,100.0,-100.0,100,-1.0,1.0);
     glOrtho(-100, 100.0, -100.0, 70, -1.0, 1.0);
+
+    // Switch back to model-view matrix
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
 }
 
 int main(int argc, char **argv)
